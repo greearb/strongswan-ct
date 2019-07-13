@@ -390,7 +390,14 @@ if test -x "$GPERF"; then
 					[[#include <string.h>
 					  const char *in_word_set(const char*, unsigned); $GPERF_OUTPUT]])],
 				[GPERF_LEN_TYPE=unsigned],
-				[AC_MSG_ERROR([unable to determine gperf len type])]
+				[AC_COMPILE_IFELSE(
+					[AC_LANG_PROGRAM(
+						[[#include <string.h>
+						  const char *in_word_set(register const char*, register unsigned int); $GPERF_OUTPUT]])],
+					[GPERF_LEN_TYPE=unsigned],
+					[AC_MSG_ERROR([unable to determine gperf len type])]
+				)]
+
 			)]
 		)
 		AC_SUBST(GPERF_LEN_TYPE)
